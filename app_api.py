@@ -1,8 +1,17 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
 app = FastAPI(title="Sovereign API", version="1.0.0")
+
+# 🚨 1. เปิด CORS เพื่อให้ PWA เรียกใช้งานได้
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/health")
 async def health():
@@ -16,21 +25,28 @@ async def ready():
 async def root():
     return {"message": "Sovereign API is running", "mode": "mock", "docs": "/docs"}
 
-@app.post("/api/v1/analyze")
-async def analyze(payload: dict):
+# 🚨 2. เปลี่ยน Endpoint ให้ตรงกับที่ PWA เรียกมา (/v1/generate)
+@app.post("/v1/generate")
+async def generate(payload: dict):
     prompt = payload.get("prompt", "")
     
     # จำลองการเช็ก OPA
     if "evil" in prompt.lower() or "hack" in prompt.lower():
-         return {"status": "DENIED", "allow": False, "reasons": ["OPA blocked: Malicious prompt detected"]}
+         return {
+             "allow": False, 
+             "reasons": ["OPA blocked: Malicious prompt detected"],
+             "block_index": 0,
+             "block_hash": "0000000000000000",
+             "generated_code": None
+         }
 
+    # 🚨 3. ส่ง Response กลับไปให้ตรงกับที่ PWA ต้องการแสดงผล
     return {
-        "status": "ok",
         "allow": True,
-        "mode": "mock",
-        "prompt_received": prompt[:100],
-        "response": f"[Mock Response] Received: {prompt}",
-        "note": "Mock Mode active. Connect OPA/Ollama endpoints for real execution.",
+        "reasons": ["OPA Policy satisfied (Mock Mode)"],
+        "block_index": 1,
+        "block_hash": "a1b2c3d4e5f67890abcdef1234567890",
+        "generated_code": f"# [Mock Output] Generated code for prompt: {prompt}\nprint('Hello from Sovereign!')"
     }
 
 if __name__ == "__main__":
