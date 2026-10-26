@@ -113,7 +113,6 @@
                     <!-- Chart Box -->
                     <div class="glass p-5 rounded-lg md:col-span-2 flex flex-col">
                         <h3 class="text-xs text-cyan-400 mb-4 uppercase tracking-widest">Trust Decay & Risk Velocity</h3>
-                        <!-- ใส่ Class chart-container เพื่อล็อกขนาด -->
                         <div class="chart-container">
                             <canvas id="riskChart"></canvas>
                         </div>
@@ -165,20 +164,9 @@
                 </div>
             </section>
 
-            <!-- LAYER 2: MANIFEST (EXAMPLE) -->
-            <section id="layer-manifest" class="layer p-4 md:p-8">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-white">Role Manifest Validator</h2>
-                    <p class="text-xs text-gray-400">OPA Policy Engine</p>
-                </div>
-                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500">
-                    หน้านี้สำหรับตรวจสอบสิทธิ์
-                </div>
-            </section>
-
-            <!-- LAYER 3: LEDGER (EXAMPLE) -->
+            <!-- LAYER 3: LEDGER -->
             <section id="layer-ledger" class="layer p-4 md:p-8">
-                <div class="mb-6 flex justify-between items-center">
+                <div class="mb-6 flex justify-between items-center shrink-0">
                     <div>
                         <h2 class="text-2xl font-bold text-white">Audit Ledger</h2>
                         <p class="text-xs text-gray-400">Cryptographic Hash-Chain</p>
@@ -190,11 +178,21 @@
                 </div>
             </section>
             
-            <!-- LAYER 4: ARTIFACTS (EXAMPLE) -->
+            <!-- LAYER 4: ARTIFACTS -->
             <section id="layer-artifacts" class="layer p-4 md:p-8">
-                <h2 class="text-2xl font-bold text-white mb-6">Master Artifacts (9)</h2>
-                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500">
+                <h2 class="text-2xl font-bold text-white mb-6 shrink-0">Master Artifacts (9)</h2>
+                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500 shrink-0">
                     รายการไฟล์ LOCKED
+                </div>
+            </section>
+
+            <!-- LAYER 5: MANIFEST -->
+             <section id="layer-manifest" class="layer p-4 md:p-8">
+                <div class="mb-6 shrink-0">
+                    <h2 class="text-2xl font-bold text-white">Role Manifest Validator</h2>
+                </div>
+                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500 shrink-0">
+                    ตรวจสอบสิทธิ์ OPA
                 </div>
             </section>
 
@@ -235,7 +233,7 @@
             options: { 
                 responsive: true, 
                 maintainAspectRatio: false,
-                animation: false, // ปิดแอนิเมชันเพื่อลดการกระตุกบนมือถือ
+                animation: false, 
                 scales: { y: { display: false }, x: { display: false } }, 
                 plugins: { legend: { display: false } } 
             }
@@ -247,7 +245,7 @@
             riskChart.update('none');
         }, 2000);
 
-        // --- 3. AGENT EXECUTION API INTEGRATION ---
+        // --- 3. AGENT EXECUTION API INTEGRATION (WITH NGROK HEADER) ---
         async function executeAgentTask(userPrompt) {
             if (!userPrompt || !userPrompt.trim()) { alert("กรุณาพิมพ์คำสั่งก่อนกด Execute"); return; }
 
@@ -266,7 +264,10 @@
             try {
                 const response = await fetch(apiEndpoint, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true' // 🔥 ข้ามหน้าเตือน Ngrok
+                    },
                     body: JSON.stringify({ prompt: userPrompt, agent_id: 'agent-trader-01', role: 'algorithmic-trader', target_egress: 'localhost' })
                 });
 
@@ -289,7 +290,7 @@
             }
         }
 
-        // --- 4. FETCH LEDGER (Mock for UI) ---
+        // --- 4. FETCH LEDGER (WITH NGROK HEADER) ---
         async function fetchLedger() {
             const timeline = document.getElementById('ledger-timeline');
             timeline.innerHTML = '<div class="text-cyan-400 text-sm text-center py-10 pulse">Fetching ledger...</div>';
@@ -298,7 +299,10 @@
             if (apiBaseUrl.endsWith('/')) apiBaseUrl = apiBaseUrl.slice(0, -1);
 
             try {
-                const response = await fetch(`${apiBaseUrl}/v1/ledger`);
+                const response = await fetch(`${apiBaseUrl}/v1/ledger`, {
+                    headers: { 'ngrok-skip-browser-warning': 'true' } // 🔥 ข้ามหน้าเตือน Ngrok
+                });
+                
                 if (!response.ok) throw new Error('API Offline');
                 const data = await response.json();
 
