@@ -10,13 +10,12 @@
     <style>
         :root { --cyan: #00f3ff; --green: #00ff88; --red: #ff003c; --bg: #040508; --panel: rgba(255,255,255,0.02); }
         
-        /* ใช้ 100dvh เพื่อแก้ปัญหาหน้าจอกระตุกบนมือถือ */
         body { background: var(--bg); color: #e2e8f0; font-family: 'JetBrains Mono', monospace; overflow: hidden; height: 100dvh; }
         
         .glass { background: var(--panel); backdrop-filter: blur(12px); border: 1px solid rgba(0,243,255,0.15); }
         
         /* Layer Transition Logic */
-        .layer { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: all 0.3s ease; transform: translateY(10px); display: flex; flex-direction: column; }
+        .layer { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: all 0.3s ease; transform: translateY(10px); display: flex; flex-direction: column; overflow-y: auto; }
         .layer.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         
         /* UI Elements */
@@ -43,6 +42,19 @@
         
         /* Grid Pattern */
         .bg-grid { background-image: linear-gradient(rgba(0,243,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,243,255,0.05) 1px, transparent 1px); background-size: 30px 30px; }
+
+        /* 🚨 FIX: ล็อกขนาดกราฟไม่ให้ขยายทะลุจอ */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 250px !important; /* ล็อกความสูงตายตัว */
+            max-height: 250px !important;
+            overflow: hidden;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
     </style>
 </head>
 <body class="flex overflow-hidden relative">
@@ -51,7 +63,7 @@
     <div id="mobile-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden"></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed md:relative w-64 h-full glass border-r border-gray-800 flex flex-col z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed md:relative w-64 h-full glass border-r border-gray-800 flex flex-col z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shrink-0">
         <div class="p-6 border-b border-gray-800 flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-bold glow-text text-white tracking-widest">SOVEREIGN<span class="text-cyan-400">V8.0</span></h1>
@@ -64,12 +76,8 @@
             <div class="text-[10px] text-gray-500 px-6 mb-2 font-bold tracking-wider">CORE SYSTEMS</div>
             <div onclick="switchLayer('dashboard', this)" class="nav-btn active px-6 py-3 cursor-pointer text-xs">📊 Command Center</div>
             <div onclick="switchLayer('artifacts', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">📦 9 Master Artifacts</div>
-            <div onclick="switchLayer('skills', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🧠 14 SKILL.md Toolkit</div>
             
             <div class="text-[10px] text-gray-500 px-6 mt-6 mb-2 font-bold tracking-wider">ADVANCED ENGINEERING</div>
-            <div onclick="switchLayer('calculus', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">∫ Calculus & Syntax</div>
-            <div onclick="switchLayer('reverse', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🔍 Reverse Eng V6</div>
-            <div onclick="switchLayer('security', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🛡️ Vulnerability Audit</div>
             <div onclick="switchLayer('manifest', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">⚖️ Role Manifest (OPA)</div>
             <div onclick="switchLayer('ledger', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🔗 Audit Ledger</div>
         </nav>
@@ -83,7 +91,7 @@
     </aside>
 
     <!-- MAIN CONTENT AREA -->
-    <div class="flex-1 flex flex-col h-full overflow-hidden bg-grid relative">
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-grid relative min-w-0">
         
         <!-- Mobile Header -->
         <header class="md:hidden flex items-center justify-between p-4 bg-gray-900 border-b border-gray-800 z-30 shrink-0">
@@ -94,22 +102,23 @@
         <main class="flex-1 relative overflow-hidden">
             
             <!-- LAYER 1: DASHBOARD -->
-            <section id="layer-dashboard" class="layer active p-4 md:p-8 w-full h-full overflow-y-auto">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 shrink-0">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-white">System Command Center</h2>
-                        <p class="text-xs text-gray-400 mt-1">Real-time Deterministic Calculus & Trust Metrics</p>
-                    </div>
+            <section id="layer-dashboard" class="layer active p-4 md:p-8">
+                <div class="mb-6 shrink-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white">System Command Center</h2>
+                    <p class="text-xs text-gray-400 mt-1">Real-time Deterministic Calculus & Trust Metrics</p>
                 </div>
 
+                <!-- Dashboard Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 shrink-0">
-                    <!-- จำกัดความสูงกราฟ ไม่ให้ดันหน้าจอ -->
+                    <!-- Chart Box -->
                     <div class="glass p-5 rounded-lg md:col-span-2 flex flex-col">
                         <h3 class="text-xs text-cyan-400 mb-4 uppercase tracking-widest">Trust Decay & Risk Velocity</h3>
-                        <div class="relative w-full h-48 md:h-64">
+                        <!-- ใส่ Class chart-container เพื่อล็อกขนาด -->
+                        <div class="chart-container">
                             <canvas id="riskChart"></canvas>
                         </div>
                     </div>
+                    <!-- Status Box -->
                     <div class="glass p-5 rounded-lg flex flex-col justify-between">
                         <div>
                             <h3 class="text-xs text-green-400 mb-2 uppercase tracking-widest">Live Conformance</h3>
@@ -128,39 +137,67 @@
 
                 <!-- API CONFIGURATION & AGENT EXECUTION -->
                 <div class="glass p-4 rounded-lg mb-6 border border-cyan-500/30 shrink-0">
-                    <h3 class="text-sm font-bold text-white mb-2">Agent Execution Console (FastAPI Integration)</h3>
+                    <h3 class="text-sm font-bold text-white mb-2">Agent Execution Console</h3>
                     
-                    <!-- ช่องกรอก API URL -->
                     <div class="mb-3">
-                        <label class="text-[10px] text-cyan-400 block mb-1">API Gateway URL (ใส่ลิงก์ Ngrok หรือ LocalTunnel ที่นี่):</label>
-                        <input id="api-url-input" type="text" value="http://localhost:8000" class="w-full bg-gray-900 text-cyan-300 p-2 text-xs border border-gray-700 rounded outline-none focus:border-cyan-500 font-mono">
+                        <label class="text-[10px] text-cyan-400 block mb-1">API Gateway URL:</label>
+                        <input id="api-url-input" type="text" value="https://ferry-dorsal-grasp.ngrok-free.dev" class="w-full bg-gray-900 text-cyan-300 p-2 text-xs border border-gray-700 rounded outline-none focus:border-cyan-500 font-mono">
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-2">
-                        <input id="agent-prompt" type="text" placeholder="Enter prompt..." class="flex-1 bg-black text-cyan-300 p-3 text-sm border border-gray-800 rounded outline-none focus:border-cyan-500 font-mono">
+                        <input id="agent-prompt" type="text" placeholder="Enter prompt (e.g. Hello World)..." class="flex-1 bg-black text-cyan-300 p-3 text-sm border border-gray-800 rounded outline-none focus:border-cyan-500 font-mono">
                         <button onclick="executeAgentTask(document.getElementById('agent-prompt').value)" id="exec-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-3 rounded font-bold text-sm transition whitespace-nowrap">
                             ▶ Execute Agent
                         </button>
                     </div>
                 </div>
 
-                <div class="glass rounded-lg overflow-hidden flex flex-col h-64 shrink-0 border border-cyan-500/30 mb-6">
+                <!-- Terminal -->
+                <div class="glass rounded-lg overflow-hidden flex flex-col h-64 shrink-0 border border-cyan-500/30 mb-8">
                     <div class="bg-gray-900 px-4 py-2 text-[10px] text-gray-400 border-b border-gray-800 flex justify-between">
                         <span>SOVEREIGN_ENFORCEMENT_GATEWAY.LOG</span>
                         <span class="text-green-400">● LIVE</span>
                     </div>
                     <div id="terminal" class="terminal p-4 flex-1 overflow-y-auto">
                         <div class="term-info">> Initializing Sovereign V8.0 Architecture...</div>
-                        <div class="term-success">> [OK] 9 Master Artifacts loaded (LOCKED).</div>
-                        <div class="term-success">> [OK] 14 SKILL.md Toolkit registered.</div>
-                        <div class="term-success">> [OK] OPA Rego Engine loaded.</div>
                         <div class="text-gray-500">> Waiting for agent actions...</div>
                     </div>
                 </div>
             </section>
 
-            <!-- (เลเยอร์อื่นๆ เหมือนเดิม) -->
+            <!-- LAYER 2: MANIFEST (EXAMPLE) -->
+            <section id="layer-manifest" class="layer p-4 md:p-8">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-white">Role Manifest Validator</h2>
+                    <p class="text-xs text-gray-400">OPA Policy Engine</p>
+                </div>
+                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500">
+                    หน้านี้สำหรับตรวจสอบสิทธิ์
+                </div>
+            </section>
+
+            <!-- LAYER 3: LEDGER (EXAMPLE) -->
+            <section id="layer-ledger" class="layer p-4 md:p-8">
+                <div class="mb-6 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Audit Ledger</h2>
+                        <p class="text-xs text-gray-400">Cryptographic Hash-Chain</p>
+                    </div>
+                    <button onclick="fetchLedger()" class="bg-cyan-600 text-white px-4 py-2 rounded text-xs">🔄 REFRESH</button>
+                </div>
+                <div id="ledger-timeline" class="space-y-4">
+                    <div class="text-sm text-gray-500 text-center py-10">กรุณากด Refresh...</div>
+                </div>
+            </section>
             
+            <!-- LAYER 4: ARTIFACTS (EXAMPLE) -->
+            <section id="layer-artifacts" class="layer p-4 md:p-8">
+                <h2 class="text-2xl font-bold text-white mb-6">Master Artifacts (9)</h2>
+                <div class="glass p-4 rounded-lg h-64 flex items-center justify-center text-gray-500">
+                    รายการไฟล์ LOCKED
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -183,7 +220,7 @@
             overlay.classList.toggle('hidden');
         }
 
-        // --- 2. CHART INITIALIZATION (Fixed Size) ---
+        // --- 2. CHART INITIALIZATION ---
         const ctx = document.getElementById('riskChart').getContext('2d');
         const riskChart = new Chart(ctx, {
             type: 'line',
@@ -197,7 +234,8 @@
             },
             options: { 
                 responsive: true, 
-                maintainAspectRatio: false, // บังคับให้กราฟอยู่ในกรอบที่เรากำหนด
+                maintainAspectRatio: false,
+                animation: false, // ปิดแอนิเมชันเพื่อลดการกระตุกบนมือถือ
                 scales: { y: { display: false }, x: { display: false } }, 
                 plugins: { legend: { display: false } } 
             }
@@ -217,13 +255,12 @@
             const btn = document.getElementById('exec-btn');
             const input = document.getElementById('agent-prompt');
             
-            // ดึง URL จากช่อง Input
             let apiBaseUrl = document.getElementById('api-url-input').value.trim();
             if (apiBaseUrl.endsWith('/')) apiBaseUrl = apiBaseUrl.slice(0, -1);
             const apiEndpoint = `${apiBaseUrl}/v1/generate`;
 
             btn.disabled = true; btn.innerHTML = '⏳ Processing...'; btn.classList.add('opacity-50', 'cursor-not-allowed');
-            terminal.innerHTML += `<div class="term-info">> [API] Sending request to ${apiEndpoint}...</div>`;
+            terminal.innerHTML += `<div class="term-info">> [API] Sending request to API...</div>`;
             terminal.scrollTop = terminal.scrollHeight;
 
             try {
@@ -233,7 +270,7 @@
                     body: JSON.stringify({ prompt: userPrompt, agent_id: 'agent-trader-01', role: 'algorithmic-trader', target_egress: 'localhost' })
                 });
 
-                if (!response.ok) throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+                if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
                 const data = await response.json();
 
                 if (data.allow) {
@@ -245,10 +282,42 @@
                     terminal.innerHTML += `<div class="term-error">> [OPA] DENIED: ${data.reasons.join(', ')}</div>`;
                 }
             } catch (error) {
-                terminal.innerHTML += `<div class="term-error">> [ERROR] API Gateway unreachable: ${error.message}</div>`;
+                terminal.innerHTML += `<div class="term-error">> [ERROR] API unreachable: ${error.message}</div>`;
                 terminal.innerHTML += `<div class="text-yellow-400 text-[10px] mt-1">> Hint: ตรวจสอบว่าลิงก์ Ngrok ถูกต้อง และ Colab ยังรันอยู่</div>`;
             } finally {
                 btn.disabled = false; btn.innerHTML = '▶ Execute Agent'; btn.classList.remove('opacity-50', 'cursor-not-allowed'); input.value = ''; terminal.scrollTop = terminal.scrollHeight;
+            }
+        }
+
+        // --- 4. FETCH LEDGER (Mock for UI) ---
+        async function fetchLedger() {
+            const timeline = document.getElementById('ledger-timeline');
+            timeline.innerHTML = '<div class="text-cyan-400 text-sm text-center py-10 pulse">Fetching ledger...</div>';
+            
+            let apiBaseUrl = document.getElementById('api-url-input').value.trim();
+            if (apiBaseUrl.endsWith('/')) apiBaseUrl = apiBaseUrl.slice(0, -1);
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/v1/ledger`);
+                if (!response.ok) throw new Error('API Offline');
+                const data = await response.json();
+
+                timeline.innerHTML = '';
+                data.chain.reverse().forEach(block => {
+                    const isAllowed = block.opa_decision;
+                    const color = isAllowed ? 'border-green-500' : 'border-red-500';
+                    timeline.innerHTML += `
+                        <div class="glass p-4 rounded-lg border-l-4 ${color}">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-cyan-400 font-bold text-sm">Block #${block.index}</span>
+                                <span class="text-[10px] text-gray-500">${new Date(block.timestamp).toLocaleString()}</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Prompt: <span class="text-yellow-300">${block.prompt}</span></div>
+                            <div class="text-[9px] font-mono text-gray-500 mt-2">Hash: ${block.hash.substring(0, 20)}...</div>
+                        </div>`;
+                });
+            } catch (error) {
+                timeline.innerHTML = `<div class="text-red-400 text-sm text-center py-10">ไม่สามารถโหลดได้: ${error.message}</div>`;
             }
         }
     </script>
