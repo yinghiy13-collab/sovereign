@@ -68,6 +68,7 @@
             <div onclick="switchLayer('reverse', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🔍 Reverse Eng V6</div>
             <div onclick="switchLayer('security', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🛡️ Vulnerability Audit</div>
             <div onclick="switchLayer('manifest', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">⚖️ Role Manifest (OPA)</div>
+            <div onclick="switchLayer('ledger', this)" class="nav-btn px-6 py-3 cursor-pointer text-xs">🔗 Audit Ledger</div>
         </nav>
         
         <div class="p-4 border-t border-gray-800">
@@ -120,9 +121,16 @@
                     </div>
                 </div>
 
-                <!-- AGENT EXECUTION CONSOLE (NEW) -->
+                <!-- API CONFIGURATION & AGENT EXECUTION -->
                 <div class="glass p-4 rounded-lg mb-6 border border-cyan-500/30">
                     <h3 class="text-sm font-bold text-white mb-2">Agent Execution Console (FastAPI Integration)</h3>
+                    
+                    <!-- ช่องกรอก API URL -->
+                    <div class="mb-3">
+                        <label class="text-[10px] text-cyan-400 block mb-1">API Gateway URL (ใส่ลิงก์ Ngrok หรือ LocalTunnel ที่นี่):</label>
+                        <input id="api-url-input" type="text" value="http://localhost:8000" class="w-full bg-gray-900 text-cyan-300 p-2 text-xs border border-gray-700 rounded outline-none focus:border-cyan-500 font-mono">
+                    </div>
+
                     <div class="flex flex-col md:flex-row gap-2">
                         <input id="agent-prompt" type="text" placeholder="Enter prompt (e.g., เขียนฟังก์ชัน Python คำนวณเลขฟีโบนักชี)..." class="flex-1 bg-black text-cyan-300 p-3 text-sm border border-gray-800 rounded outline-none focus:border-cyan-500 font-mono">
                         <button onclick="executeAgentTask(document.getElementById('agent-prompt').value)" id="exec-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-3 rounded font-bold text-sm transition whitespace-nowrap">
@@ -153,7 +161,6 @@
                     <p class="text-xs text-gray-400">Sovereign Genesis Standard Cryptographically Locked Components</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Artifact 1-9 (Same as before, shortened for brevity) -->
                     <div class="glass p-4 rounded border-l-2 border-green-500 flex justify-between items-center"><div><div class="text-[10px] text-gray-500">SGS-RECEIPT-001-v1.0</div><div class="text-sm font-bold text-white">9 Receipt Files</div></div><span class="text-[10px] bg-green-900/50 text-green-400 px-2 py-1 rounded">✅ LOCKED</span></div>
                     <div class="glass p-4 rounded border-l-2 border-green-500 flex justify-between items-center"><div><div class="text-[10px] text-gray-500">SGS-REBUILD-CHAIN-001-v1.0</div><div class="text-sm font-bold text-white">rebuild_chain.py</div></div><span class="text-[10px] bg-green-900/50 text-green-400 px-2 py-1 rounded">✅ LOCKED</span></div>
                     <div class="glass p-4 rounded border-l-2 border-green-500 flex justify-between items-center"><div><div class="text-[10px] text-gray-500">SGS-TRANSPARENCY-001-v1.0</div><div class="text-sm font-bold text-white">transparency.log</div></div><span class="text-[10px] bg-green-900/50 text-green-400 px-2 py-1 rounded">✅ LOCKED</span></div>
@@ -166,9 +173,71 @@
                 </div>
             </section>
 
-            <!-- (Other layers: SKILLS, CALCULUS, REVERSE ENG, SECURITY, MANIFEST remain unchanged) -->
-            <!-- ... -->
-            
+            <!-- LAYER 3: SKILLS -->
+            <section id="layer-skills" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
+                <div class="mb-6 border-b border-gray-800 pb-4">
+                    <h2 class="text-2xl font-bold text-white">SKILL.md Toolkit (14)</h2>
+                    <p class="text-xs text-gray-400">Deterministic Execution & JEV-style Fork Control</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="glass p-4 rounded-lg border-t-2 border-cyan-500 hover:bg-white/5 transition"><div class="text-[10px] text-gray-500 mb-1">SKILL_01</div><div class="text-sm font-bold text-white mb-2">Manifest Validator</div><div class="flex justify-between items-center"><span class="text-[9px] bg-cyan-900 text-cyan-300 px-2 py-0.5 rounded">READY</span><span class="text-[9px] text-gray-500">Python</span></div></div>
+                    <div class="glass p-4 rounded-lg border-t-2 border-cyan-500 hover:bg-white/5 transition"><div class="text-[10px] text-gray-500 mb-1">SKILL_02</div><div class="text-sm font-bold text-white mb-2">OPA Enforcer</div><div class="flex justify-between items-center"><span class="text-[9px] bg-cyan-900 text-cyan-300 px-2 py-0.5 rounded">READY</span><span class="text-[9px] text-gray-500">Rego</span></div></div>
+                    <div class="glass p-4 rounded-lg border-t-2 border-cyan-500 hover:bg-white/5 transition"><div class="text-[10px] text-gray-500 mb-1">SKILL_03</div><div class="text-sm font-bold text-white mb-2">REA Native Audit</div><div class="flex justify-between items-center"><span class="text-[9px] bg-cyan-900 text-cyan-300 px-2 py-0.5 rounded">READY</span><span class="text-[9px] text-gray-500">Bash</span></div></div>
+                    <div class="glass p-4 rounded-lg border-t-2 border-purple-500 hover:bg-white/5 transition"><div class="text-[10px] text-gray-500 mb-1">SKILL_04</div><div class="text-sm font-bold text-white mb-2">Electron Inspector</div><div class="flex justify-between items-center"><span class="text-[9px] bg-purple-900 text-purple-300 px-2 py-0.5 rounded">ACTIVE</span><span class="text-[9px] text-gray-500">Node.js</span></div></div>
+                    <div class="glass p-4 rounded-lg border-t-2 border-cyan-500 hover:bg-white/5 transition"><div class="text-[10px] text-gray-500 mb-1">SKILL_05</div><div class="text-sm font-bold text-white mb-2">Evidence Recorder</div><div class="flex justify-between items-center"><span class="text-[9px] bg-cyan-900 text-cyan-300 px-2 py-0.5 rounded">READY</span><span class="text-[9px] text-gray-500">Python</span></div></div>
+                </div>
+            </section>
+
+            <!-- LAYER 4: CALCULUS -->
+            <section id="layer-calculus" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
+                <div class="mb-6 border-b border-gray-800 pb-4">
+                    <h2 class="text-2xl font-bold text-white">Calculus & Syntax Engineering</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-cyan-400 font-bold mb-6">∫ Differential Equations</h3>
+                        <div class="bg-black p-6 rounded border border-gray-800 font-serif text-lg text-center text-white mb-6 overflow-x-auto">
+                            T(t) = T<sub>0</sub> e<sup>-λt</sup> · ∫<sub>0</sub><sup>t</sup> (dE/dP)(τ) dτ
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg overflow-hidden">
+                        <h3 class="text-yellow-400 font-bold mb-4">High-Level Syntax AST</h3>
+                        <pre class="text-[11px] text-green-400 bg-black p-4 rounded border border-gray-800 overflow-x-auto">
+Program
+ ├── Manifest
+ ├── PolicyCheck
+ └── Execution</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LAYER 5: REVERSE ENG -->
+            <section id="layer-reverse" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
+                <div class="mb-6 border-b border-gray-800 pb-4">
+                    <h2 class="text-2xl font-bold text-white">Panxboxy V6 Isolation Audit</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="glass p-6 rounded-lg border-t-2 border-cyan-500"><h3 class="text-sm font-bold text-white mb-2">Tier 1: Process Isolation</h3><p class="text-xs text-gray-400">ใช้ gVisor (runsc) ในการจำกัด Syscalls</p></div>
+                    <div class="glass p-6 rounded-lg border-t-2 border-green-500"><h3 class="text-sm font-bold text-white mb-2">Tier 2: Network Policies</h3><p class="text-xs text-gray-400">Zero-Trust Network ปิดกั้น Traffic ขาออก</p></div>
+                    <div class="glass p-6 rounded-lg border-t-2 border-red-500"><h3 class="text-sm font-bold text-white mb-2">Tier 3: Read-Only FS</h3><p class="text-xs text-gray-400">Filesystem ถูก Mount แบบ Read-Only</p></div>
+                </div>
+            </section>
+
+            <!-- LAYER 6: SECURITY -->
+            <section id="layer-security" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-gray-800 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Vulnerability Audit & Auto-Fix</h2>
+                    </div>
+                    <button onclick="runVulnScan()" class="bg-red-900 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition">▶ RUN DEEP SCAN</button>
+                </div>
+                <div class="glass p-6 rounded-lg">
+                    <div id="vuln-list" class="space-y-4">
+                        <div class="text-sm text-gray-500 text-center py-10">กด RUN DEEP SCAN เพื่อตรวจสอบช่องโหว่ในระบบ</div>
+                    </div>
+                </div>
+            </section>
+
             <!-- LAYER 7: ROLE MANIFEST (OPA) -->
             <section id="layer-manifest" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-gray-800 pb-4 gap-4">
@@ -195,6 +264,23 @@
                 </div>
             </section>
 
+            <!-- LAYER 8: AUDIT LEDGER -->
+            <section id="layer-ledger" class="layer p-4 md:p-8 w-full h-full overflow-y-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-gray-800 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">GRC-015 Audit Ledger</h2>
+                        <p class="text-xs text-gray-400">Cryptographic Hash-Chain (Immutable Audit Trail)</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="ledger-integrity" class="text-sm font-bold text-gray-500">CHECKING...</div>
+                        <button onclick="fetchLedger()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded text-xs font-bold transition">🔄 REFRESH</button>
+                    </div>
+                </div>
+                <div id="ledger-timeline" class="space-y-4">
+                    <div class="text-sm text-gray-500 text-center py-10">กรุณากด Refresh เพื่อโหลดข้อมูลจาก API...</div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -207,6 +293,7 @@
             btn.classList.add('active');
             
             if (window.innerWidth < 768) toggleSidebar();
+            if (id === 'ledger') fetchLedger();
         }
 
         function toggleSidebar() {
@@ -237,119 +324,68 @@
             riskChart.update('none');
         }, 2000);
 
-        // --- 3. VULNERABILITY SCANNER (Layer 6) ---
+        // --- 3. VULNERABILITY SCANNER ---
         const vulns = [
             { id: 'VULN-01', name: 'Missing SLSA Evidence', desc: 'อ้าง SLSA Level 3 แต่ไม่มี Provenance Hash', file: 'docs/security.md:12' },
-            { id: 'VULN-02', name: 'Insecure Randomness', desc: 'ใช้ Math.random() ในการสร้าง Token', file: 'auth/token_gen.js:42' },
-            { id: 'VULN-03', name: 'Egress Violation', desc: 'พยายามเชื่อมต่อ unauthorized-malicious-c2.com', file: 'agent/manifest.json:88' }
+            { id: 'VULN-02', name: 'Insecure Randomness', desc: 'ใช้ Math.random() ในการสร้าง Token', file: 'auth/token_gen.js:42' }
         ];
 
         function runVulnScan() {
             const list = document.getElementById('vuln-list');
-            if(!list) return; // Guard clause
-            list.innerHTML = '<div class="text-cyan-400 text-xs pulse py-4 text-center">กำลังสแกนระบบด้วย Reverse Engineering Engine...</div>';
-            
+            list.innerHTML = '<div class="text-cyan-400 text-xs pulse py-4 text-center">กำลังสแกนระบบ...</div>';
             setTimeout(() => {
                 list.innerHTML = '';
                 vulns.forEach(v => {
                     list.innerHTML += `
                         <div class="border border-red-500/30 bg-red-900/10 p-4 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold">${v.id}</span>
-                                    <h4 class="text-sm font-bold text-white">${v.name}</h4>
-                                </div>
-                                <p class="text-xs text-gray-400">${v.desc}</p>
-                                <p class="text-[10px] text-gray-500 mt-1 font-mono">📄 ${v.file}</p>
-                            </div>
-                            <button onclick="autoFix('${v.id}', this)" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                                ✨ AI AUTO-FIX
-                            </button>
-                        </div>
-                    `;
+                            <div><div class="flex items-center gap-2 mb-1"><span class="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold">${v.id}</span><h4 class="text-sm font-bold text-white">${v.name}</h4></div><p class="text-xs text-gray-400">${v.desc}</p><p class="text-[10px] text-gray-500 mt-1 font-mono">📄 ${v.file}</p></div>
+                            <button onclick="autoFix('${v.id}', this)" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">✨ AI AUTO-FIX</button>
+                        </div>`;
                 });
             }, 1500);
         }
 
         function autoFix(id, btn) {
-            btn.innerHTML = '⏳ Patching...';
-            btn.className = 'bg-gray-600 text-white px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap';
-            
+            btn.innerHTML = '⏳ Patching...'; btn.className = 'bg-gray-600 text-white px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap';
             setTimeout(() => {
                 const container = btn.parentElement;
                 container.className = 'border border-green-500/30 bg-green-900/10 p-4 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4';
-                btn.innerHTML = '✓ FIXED';
-                btn.className = 'bg-green-800 text-green-300 px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap';
-                
-                const term = document.getElementById('terminal');
-                term.innerHTML += `<div class="term-success">> [AUTO-FIX] Patched ${id} via Evidence Injection.</div>`;
-                term.scrollTop = term.scrollHeight;
+                btn.innerHTML = '✓ FIXED'; btn.className = 'bg-green-800 text-green-300 px-4 py-2 rounded text-xs font-bold transition flex items-center gap-2 whitespace-nowrap';
+                document.getElementById('terminal').innerHTML += `<div class="term-success">> [AUTO-FIX] Patched ${id} via Evidence Injection.</div>`;
             }, 1000);
         }
 
-        // --- 4. OPA MANIFEST VALIDATOR (Layer 7) ---
+        // --- 4. OPA MANIFEST VALIDATOR ---
         const opaExamples = {
-            valid: {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "agent_id": "agent-trader-01",
-                "action": "tool.invoke",
-                "networkAllowlist": ["api.opticodds.com"],
-                "targetEgress": "api.opticodds.com",
-                "maxCalls": 100,
-                "calls": 42
-            },
-            malicious: {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "agent_id": "agent-trader-01",
-                "action": "tool.invoke",
-                "networkAllowlist": ["api.opticodds.com"],
-                "targetEgress": "evil-hacker-c2.com",
-                "maxCalls": 50,
-                "calls": 85
-            }
+            valid: { "$schema": "https://json-schema.org/draft/2020-12/schema", "agent_id": "agent-trader-01", "action": "tool.invoke", "networkAllowlist": ["api.opticodds.com"], "targetEgress": "api.opticodds.com", "maxCalls": 100, "calls": 42 },
+            malicious: { "$schema": "https://json-schema.org/draft/2020-12/schema", "agent_id": "agent-trader-01", "action": "tool.invoke", "networkAllowlist": ["api.opticodds.com"], "targetEgress": "evil-hacker-c2.com", "maxCalls": 50, "calls": 85 }
         };
 
         function loadOPAExample(type) {
-            const input = document.getElementById('opa-input');
-            if(input) {
-                input.value = JSON.stringify(opaExamples[type], null, 2);
-                evalOPA();
-            }
+            document.getElementById('opa-input').value = JSON.stringify(opaExamples[type], null, 2);
+            evalOPA();
         }
 
         function evalOPA() {
             const input = document.getElementById('opa-input').value;
             const status = document.getElementById('opa-status');
             const output = document.getElementById('opa-output');
-            
             try {
                 const payload = JSON.parse(input);
                 const isNetworkAllowed = payload.networkAllowlist.includes(payload.targetEgress);
                 const isRateAllowed = payload.calls <= payload.maxCalls;
                 const isAllow = isNetworkAllowed && isRateAllowed;
-
-                const result = {
-                    decision_id: `dec-${Math.random().toString(36).substr(2, 6)}`,
-                    allow: isAllow,
-                    reasons: []
-                };
+                const result = { decision_id: `dec-${Math.random().toString(36).substr(2, 6)}`, allow: isAllow, reasons: [] };
 
                 if (!isNetworkAllowed) result.reasons.push(`Egress '${payload.targetEgress}' blocked by allowlist.`);
                 if (!isRateAllowed) result.reasons.push(`Rate limit exceeded: ${payload.calls}/${payload.maxCalls}.`);
                 if (isAllow) result.reasons.push("All OPA constraints satisfied.");
 
-                if (isAllow) {
-                    status.innerText = 'ALLOW (PERMITTED)';
-                    status.className = 'text-sm font-bold text-green-400 mb-2';
-                } else {
-                    status.innerText = 'DENY (POLICY VIOLATION)';
-                    status.className = 'text-sm font-bold text-red-400 mb-2';
-                }
-
+                status.innerText = isAllow ? 'ALLOW (PERMITTED)' : 'DENY (POLICY VIOLATION)';
+                status.className = isAllow ? 'text-sm font-bold text-green-400 mb-2' : 'text-sm font-bold text-red-400 mb-2';
                 output.innerHTML = syntaxHighlight(JSON.stringify(result, null, 2));
             } catch (e) {
-                status.innerText = 'INVALID JSON';
-                status.className = 'text-sm font-bold text-red-500 mb-2';
+                status.innerText = 'INVALID JSON'; status.className = 'text-sm font-bold text-red-500 mb-2';
                 output.innerHTML = `<span class="text-red-500">Error: ${e.message}</span>`;
             }
         }
@@ -363,42 +399,31 @@
             });
         }
 
-        // --- 5. AGENT EXECUTION API INTEGRATION (NEW) ---
+        // --- 5. AGENT EXECUTION API INTEGRATION ---
         async function executeAgentTask(userPrompt) {
-            if (!userPrompt || !userPrompt.trim()) {
-                alert("กรุณาพิมพ์คำสั่งก่อนกด Execute");
-                return;
-            }
+            if (!userPrompt || !userPrompt.trim()) { alert("กรุณาพิมพ์คำสั่งก่อนกด Execute"); return; }
 
             const terminal = document.getElementById('terminal');
             const btn = document.getElementById('exec-btn');
             const input = document.getElementById('agent-prompt');
             
-            // UI Loading State
-            btn.disabled = true;
-            btn.innerHTML = '⏳ Processing...';
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            
-            terminal.innerHTML += `<div class="term-info">> [API] Sending request to Sovereign API Gateway...</div>`;
+            // ดึง URL จากช่อง Input
+            let apiBaseUrl = document.getElementById('api-url-input').value.trim();
+            if (apiBaseUrl.endsWith('/')) apiBaseUrl = apiBaseUrl.slice(0, -1);
+            const apiEndpoint = `${apiBaseUrl}/v1/generate`;
+
+            btn.disabled = true; btn.innerHTML = '⏳ Processing...'; btn.classList.add('opacity-50', 'cursor-not-allowed');
+            terminal.innerHTML += `<div class="term-info">> [API] Sending request to ${apiEndpoint}...</div>`;
             terminal.scrollTop = terminal.scrollHeight;
 
             try {
-                // NOTE: If opening from mobile, change localhost to your computer's LAN IP (e.g., 192.168.1.100:8000)
-                const response = await fetch('http://localhost:8000/v1/generate', {
+                const response = await fetch(apiEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        prompt: userPrompt,
-                        agent_id: 'agent-trader-01',
-                        role: 'algorithmic-trader',
-                        target_egress: 'localhost'
-                    })
+                    body: JSON.stringify({ prompt: userPrompt, agent_id: 'agent-trader-01', role: 'algorithmic-trader', target_egress: 'localhost' })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
                 const data = await response.json();
 
                 if (data.allow) {
@@ -411,18 +436,69 @@
                 }
             } catch (error) {
                 terminal.innerHTML += `<div class="term-error">> [ERROR] API Gateway unreachable: ${error.message}</div>`;
-                terminal.innerHTML += `<div class="text-yellow-400 text-[10px] mt-1">> Hint: Make sure 'python3 app_api.py' is running on port 8000.</div>`;
+                terminal.innerHTML += `<div class="text-yellow-400 text-[10px] mt-1">> Hint: ตรวจสอบว่าลิงก์ Ngrok ถูกต้อง และ Colab ยังรันอยู่</div>`;
             } finally {
-                // Reset UI State
-                btn.disabled = false;
-                btn.innerHTML = '▶ Execute Agent';
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                input.value = '';
-                terminal.scrollTop = terminal.scrollHeight;
+                btn.disabled = false; btn.innerHTML = '▶ Execute Agent'; btn.classList.remove('opacity-50', 'cursor-not-allowed'); input.value = ''; terminal.scrollTop = terminal.scrollHeight;
             }
         }
 
-        // Initialize OPA with valid example
+        // --- 6. AUDIT LEDGER FETCHER ---
+        async function fetchLedger() {
+            const timeline = document.getElementById('ledger-timeline');
+            const integrityStatus = document.getElementById('ledger-integrity');
+            
+            let apiBaseUrl = document.getElementById('api-url-input').value.trim();
+            if (apiBaseUrl.endsWith('/')) apiBaseUrl = apiBaseUrl.slice(0, -1);
+            const apiEndpoint = `${apiBaseUrl}/v1/ledger`;
+            
+            timeline.innerHTML = '<div class="text-cyan-400 text-sm text-center py-10 pulse">Fetching ledger from API...</div>';
+
+            try {
+                const response = await fetch(apiEndpoint);
+                if (!response.ok) throw new Error('API Offline');
+                const data = await response.json();
+
+                if (data.chain_integrity) {
+                    integrityStatus.innerHTML = '✅ CHAIN INTEGRITY: VERIFIED'; integrityStatus.className = 'text-sm font-bold text-green-400';
+                } else {
+                    integrityStatus.innerHTML = '🚨 CHAIN COMPROMISED!'; integrityStatus.className = 'text-sm font-bold text-red-500 pulse';
+                }
+
+                timeline.innerHTML = '';
+                const reversedChain = [...data.chain].reverse();
+                
+                reversedChain.forEach((block) => {
+                    const isAllowed = block.opa_decision;
+                    const colorClass = isAllowed ? 'border-green-500' : 'border-red-500';
+                    const statusBadge = isAllowed ? '<span class="text-[10px] bg-green-900 text-green-300 px-2 py-0.5 rounded">ALLOWED</span>' : '<span class="text-[10px] bg-red-900 text-red-300 px-2 py-0.5 rounded">DENIED</span>';
+
+                    timeline.innerHTML += `
+                        <div class="glass p-4 rounded-lg border-l-4 ${colorClass} relative">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3"><span class="text-cyan-400 font-bold text-sm">Block #${block.index}</span>${statusBadge}</div>
+                                <span class="text-[10px] text-gray-500">${new Date(block.timestamp).toLocaleString()}</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs mb-3">
+                                <div><span class="text-gray-500">Agent:</span> <span class="text-white">${block.agent_id}</span></div>
+                                <div><span class="text-gray-500">Action:</span> <span class="text-white">${block.action}</span></div>
+                            </div>
+                            <div class="bg-black p-2 rounded border border-gray-800 text-[10px] font-mono mb-2">
+                                <div class="text-gray-500">Prompt: <span class="text-yellow-300">${block.prompt}</span></div>
+                                ${block.reasons.length > 0 ? `<div class="text-gray-500 mt-1">Reason: <span class="text-red-400">${block.reasons.join(', ')}</span></div>` : ''}
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[9px] font-mono text-gray-500">
+                                <div>Prev: <span class="text-cyan-400">${block.previous_hash.substring(0, 20)}...</span></div>
+                                <div>Hash: <span class="text-green-400">${block.hash.substring(0, 20)}...</span></div>
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                integrityStatus.innerHTML = '❌ API OFFLINE'; integrityStatus.className = 'text-sm font-bold text-red-500';
+                timeline.innerHTML = `<div class="text-red-400 text-sm text-center py-10">ไม่สามารถเชื่อมต่อ API ได้: ${error.message}<br><span class="text-xs text-gray-500">โปรดตรวจสอบลิงก์ API ด้านบน</span></div>`;
+            }
+        }
+
+        // Initialize
         loadOPAExample('valid');
     </script>
 </body>
